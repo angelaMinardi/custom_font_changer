@@ -35,16 +35,16 @@ function init() {
 
 init();
 
-// Update the storage change listener
+// Updated storage change listener
 browser.storage.onChanged.addListener((changes, area) => {
   if (area === 'local' && (changes.customFontFace || changes.customFontName)) {
-    const customFontFace = changes.customFontFace ? changes.customFontFace.newValue : undefined;
-    const customFontName = changes.customFontName ? changes.customFontName.newValue : undefined;
-
-    if (customFontFace && customFontName) {
-      applyCustomFont(customFontFace, customFontName);
-    } else {
-      removeCustomFont();
-    }
+    // Fetch the current values from storage
+    browser.storage.local.get(['customFontFace', 'customFontName']).then((result) => {
+      if (result.customFontFace && result.customFontName) {
+        applyCustomFont(result.customFontFace, result.customFontName);
+      } else {
+        removeCustomFont();
+      }
+    });
   }
 });
