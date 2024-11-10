@@ -1,18 +1,15 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Custom Font Changer",
   "version": "1.0",
   "description": "Change all text to a custom font.",
-  "permissions": ["storage", "<all_urls>"],
-  "browser_action": {
+  "permissions": ["storage", "activeTab", "scripting"],
+  "action": {
     "default_title": "Custom Font Changer",
     "default_popup": "options.html"
   },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["contentScript.js"],
-      "run_at": "document_end"
-    }
-  ]
+  "background": {
+    "service_worker": "background.js"
+  },
+  "host_permissions": ["<all_urls>"]
 }
