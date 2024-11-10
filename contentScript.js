@@ -35,7 +35,6 @@ function init() {
 
 init();
 
-// Listen for changes in storage to update the font dynamically
 browser.storage.onChanged.addListener((changes, area) => {
   if (area === 'local' && (changes.customFontFace || changes.customFontName)) {
     if (changes.customFontFace && changes.customFontName) {
