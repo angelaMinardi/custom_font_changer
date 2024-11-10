@@ -6,6 +6,44 @@ function arrayBufferToBase64(buffer) {
   bytes.forEach((b) => binary += String.fromCharCode(b));
   return window.btoa(binary);
 }
+document.getElementById('fontUpload').addEventListener('change', function () {
+  const file = this.files[0];
+  if (file) {
+    const validTypes = [
+      'font/ttf', 'font/otf', 'font/woff', 'font/woff2',
+      'application/x-font-ttf', 'application/x-font-otf',
+      'application/octet-stream', ''
+    ];
+    if (!validTypes.includes(file.type)) {
+      alert('Unsupported font type.');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const fontData = e.target.result; // This is a data URL
+
+      const fontName = file.name.replace(/\.[^/.]+$/, "");
+      const fontFormat = 'truetype'; // Assume truetype for simplicity
+
+      const fontFace = `
+        @font-face {
+          font-family: '${fontName}';
+          src: url('${fontData}') format('${fontFormat}');
+        }
+      `;
+
+      // Save font data to storage
+      browser.storage.local.set({
+        customFontFace: fontFace,
+        customFontName: fontName
+      }).then(() => {
+        alert('Custom font applied!');
+      });
+    };
+    reader.readAsDataURL(file); // Read as Data URL
+  }
+});
+
 
 document.getElementById('useAurebesh').addEventListener('click', async function () {
   const fontFiles = [
