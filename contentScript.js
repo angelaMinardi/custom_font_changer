@@ -1,3 +1,5 @@
+// contentScript.js
+
 function applyCustomFont(fontFace, fontName) {
   let styleElement = document.getElementById('customFontStyle');
   if (styleElement) {
@@ -7,17 +9,26 @@ function applyCustomFont(fontFace, fontName) {
   styleElement.id = 'customFontStyle';
   styleElement.innerHTML = `
     ${fontFace}
-    body, body * {
-      font-family: '${fontName}' !important;
+    * {
+      font-family: '${fontName}', '${fontName} Condensed' !important;
     }
   `;
   document.head.appendChild(styleElement);
+}
+
+function removeCustomFont() {
+  const styleElement = document.getElementById('customFontStyle');
+  if (styleElement) {
+    styleElement.remove();
+  }
 }
 
 function init() {
   browser.storage.local.get(['customFontFace', 'customFontName']).then((result) => {
     if (result.customFontFace && result.customFontName) {
       applyCustomFont(result.customFontFace, result.customFontName);
+    } else {
+      removeCustomFont();
     }
   });
 }
@@ -31,10 +42,7 @@ browser.storage.onChanged.addListener((changes, area) => {
       applyCustomFont(changes.customFontFace.newValue, changes.customFontName.newValue);
     } else {
       // If font is reset
-      const styleElement = document.getElementById('customFontStyle');
-      if (styleElement) {
-        styleElement.remove();
-      }
+      removeCustomFont();
     }
   }
 });
