@@ -14,5 +14,13 @@
       "js": ["contentScript.js"],
       "run_at": "document_end"
     }
+  ],
+  "web_accessible_resources": [
+    "Aurebesh.otf",
+    "Aurebesh Italic.otf",
+    "Aurebesh Bold.otf",
+    "Aurebesh Bold Italic.otf",
+    "Aurebesh Condensed.otf",
+    "Aurebesh Condensed Italic.otf"
   ]
 }
